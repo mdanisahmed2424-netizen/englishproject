@@ -128,8 +128,19 @@
                 }
 
             } catch (error) {
-                console.error('Error:', error);
-                showError('Could not connect to the analysis server. Is it running?');
+                console.error('Fetch error:', error);
+
+                let errorMsg = 'Could not connect to the analysis server.';
+
+                if (error.message) {
+                    errorMsg += ' Details: ' + error.message;
+                }
+
+                if (window.location.protocol === 'https:' && predictApi.startsWith('http:')) {
+                    errorMsg += ' (Mixed Content Error: Cannot access HTTP API from HTTPS page)';
+                }
+
+                showError(errorMsg + ' Check console for more info.');
             } finally {
                 setLoading(false);
             }
