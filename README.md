@@ -1,10 +1,19 @@
+---
+title: Sentiment Analysis API
+emoji: 😊
+colorFrom: blue
+colorTo: green
+sdk: docker
+pinned: false
+---
+
 # Sentiment Analysis API
 
 A FastAPI-based sentiment analysis service using ensemble machine learning models (KNN, Random Forest, Extra Trees).
 
 ## Features
 
-- **Fast predictions** using pre-trained ML models
+- **Fast predictions** using pre-trained ML models from HuggingFace Model Hub
 - **RESTful API** with automatic documentation
 - **CORS enabled** for web frontend integration
 - **Ensemble learning** for improved accuracy
@@ -37,20 +46,12 @@ Analyzes sentiment of input text
 
 ## Models
 
-This API uses three pre-trained models:
+This API downloads models from HuggingFace Model Hub: `anis80/anisproject`
+
 - **Label Encoder**: Encodes sentiment labels
-- **TF-IDF Vectorizer**: Converts text to numerical features
+- **TF-IDF Vectorizer**: Converts text to numerical features  
 - **Voting Classifier**: Ensemble of KNN, Random Forest, and Extra Trees
-
-## Local Development
-
-```bash
-pip install -r requirements.txt
-python app.py
-```
-
-The API will be available at `http://localhost:7860`
 
 ## Documentation
 
-Interactive API documentation available at `/docs` (Swagger UI) and `/redoc` (ReDoc)
+Interactive API documentation available at `/docs` (Swagger UI)
