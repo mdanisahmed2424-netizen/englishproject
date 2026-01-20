@@ -115,11 +115,24 @@
                     body: JSON.stringify({ text: text })
                 });
 
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
+                let data;
+                const contentType = response.headers.get("content-type");
+
+                if (contentType && contentType.indexOf("application/json") !== -1) {
+                    data = await response.json();
+                } else {
+                    // If not JSON, probably an error page
+                    const text = await response.text();
+                    console.error('Non-JSON response:', text);
+                    if (!response.ok) {
+                        throw new Error('Server Error: ' + response.status + ' ' + response.statusText);
+                    }
+                    data = {}; // safe fallback
                 }
 
-                const data = await response.json();
+                if (!response.ok) {
+                    throw new Error(data.detail || 'Network response was not ok');
+                }
 
                 if (data.predicted_sentiment) {
                     displayResult(data.predicted_sentiment);
