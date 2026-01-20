@@ -7,7 +7,7 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy models and application
-COPY models-20260120T133709Z-3-002 models-20260120T133709Z-3-002
+# Models are downloaded at runtime from HuggingFace Hub
 COPY app.py .
 
 # Expose port 7860 (HuggingFace Spaces default)
