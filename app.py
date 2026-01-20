@@ -133,18 +133,32 @@ async def predict_sentiment(input_data: TextInput):
             )
         
         # Preprocess and transform the text
-        text_tfidf = tfidf_vectorizer.transform([input_data.text])
-        
-        # Make prediction
-        prediction = voting_classifier.predict(text_tfidf)
-        
-        # Decode the prediction
-        sentiment = label_encoder.inverse_transform(prediction)[0]
-        
-        return PredictionResponse(
-            predicted_sentiment=sentiment,
-            input_text=input_data.text
-        )
+        try:
+            print(f"Transforming text: '{input_data.text}'")
+            text_tfidf = tfidf_vectorizer.transform([input_data.text])
+            print(f"Shape: {text_tfidf.shape}")
+            
+            # Make prediction
+            print("Predicting...")
+            prediction = voting_classifier.predict(text_tfidf)
+            print(f"Raw prediction: {prediction}")
+            
+            # Decode the prediction
+            sentiment = label_encoder.inverse_transform(prediction)[0]
+            print(f"Sentiment: {sentiment}")
+            
+            return PredictionResponse(
+                predicted_sentiment=sentiment,
+                input_text=input_data.text
+            )
+        except Exception as e:
+            import traceback
+            error_trace = traceback.format_exc()
+            print(f"Prediction logic error: {str(e)}\n{error_trace}")
+            raise HTTPException(
+                status_code=500, 
+                detail=f"Model error: {str(e)}"
+            )
         
     except HTTPException:
         raise
